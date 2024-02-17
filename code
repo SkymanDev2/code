@@ -1,4 +1,8 @@
-const TransferComponent = ({ message, onTransfer }) => {
+import React, { useState } from 'react';
+import { View, Text, Button, TextInput } from 'react-native'; // Assurez-vous d'importer les composants appropriés
+
+// Composant pour un message avec bouton Transférer
+const MessageComponent = ({ message, onTransfer }) => {
   const [recipient, setRecipient] = useState('');
 
   const handleTransfer = () => {
@@ -7,7 +11,7 @@ const TransferComponent = ({ message, onTransfer }) => {
 
   return (
     <View>
-      <Text>Transférer le message à :</Text>
+      <Text>{message.text}</Text>
       <TextInput
         placeholder="Nom d'utilisateur du destinataire"
         value={recipient}
@@ -18,61 +22,28 @@ const TransferComponent = ({ message, onTransfer }) => {
   );
 };
 
+// Fonction pour transférer un message
 const transferMessage = (message, recipient) => {
-  console.log(`Message transféré à ${recipient}: ${message.content}`);
+  // Logique de transfert réelle ici
+  console.log(`Message transféré à ${recipient}: ${message.text}`);
+  // Ajoutez votre logique de transfert, par exemple, l'envoi à un ami.
 };
 
-const q = {
-  onStart() {
-    w.before(A, "openLazy", (o, [n, i, m]) => {
-      const u = m == null ? void 0 : m.message;
+// Écran principal
+const MainScreen = () => {
+  const messages = [...]; // Remplacez ceci par votre liste de messages
 
-      i !== "MessageLongPressActionSheet" || !u
-        ? n
-        : n.then((B) => {
-            const k = w.after(B, "default", (Q, Z, y) => {
-              const p = O(y, (g) => {
-                var h, b;
-                return ((b = (h = g == null ? void 0 : g[0]) == null ? void 0 : h.type) == null ? void 0 : b.name) === "ButtonRow";
-              });
+  return (
+    <View>
+      {messages.map((message, index) => (
+        <MessageComponent key={index} message={message} onTransfer={transferMessage} />
+      ))}
+    </View>
+  );
+};
 
-              if (!p) return y;
+export default MainScreen;
 
-              const I = () =>
-                t.createElement(j, {
-                  initialRouteName: "TransferPage",
-                  goBackOnBackPress: !0,
-                  screens: {
-                    TransferPage: {
-                      title: "Transfer",
-                      headerLeft: X(() => f.pop()),
-                      render: () => (
-                        <TransferComponent
-                          message={u}
-                          onTransfer={(message, recipient) => transferMessage(message, recipient)}
-                        />
-                      ),
-                    },
-                  },
-                });
-
-              p.push(
-                t.createElement(U, {
-                  label: "Transférer",
-                  icon: c("icon_transfer"),
-                  onPress: () => {
-                    A.hideActionSheet();
-                    f.push(I);
-                  },
-                })
-              );
-            });
-          });
-    });
-  },
-
-  onStop() {
-    w.unpatchAll();
   },
 };
 
