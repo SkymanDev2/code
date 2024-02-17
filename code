@@ -1,0 +1,79 @@
+const TransferComponent = ({ message, onTransfer }) => {
+  const [recipient, setRecipient] = useState('');
+
+  const handleTransfer = () => {
+    onTransfer(message, recipient);
+  };
+
+  return (
+    <View>
+      <Text>Transférer le message à :</Text>
+      <TextInput
+        placeholder="Nom d'utilisateur du destinataire"
+        value={recipient}
+        onChangeText={setRecipient}
+      />
+      <Button title="Transférer" onPress={handleTransfer} />
+    </View>
+  );
+};
+
+const transferMessage = (message, recipient) => {
+  console.log(`Message transféré à ${recipient}: ${message.content}`);
+};
+
+const q = {
+  onStart() {
+    w.before(A, "openLazy", (o, [n, i, m]) => {
+      const u = m == null ? void 0 : m.message;
+
+      i !== "MessageLongPressActionSheet" || !u
+        ? n
+        : n.then((B) => {
+            const k = w.after(B, "default", (Q, Z, y) => {
+              const p = O(y, (g) => {
+                var h, b;
+                return ((b = (h = g == null ? void 0 : g[0]) == null ? void 0 : h.type) == null ? void 0 : b.name) === "ButtonRow";
+              });
+
+              if (!p) return y;
+
+              const I = () =>
+                t.createElement(j, {
+                  initialRouteName: "TransferPage",
+                  goBackOnBackPress: !0,
+                  screens: {
+                    TransferPage: {
+                      title: "Transfer",
+                      headerLeft: X(() => f.pop()),
+                      render: () => (
+                        <TransferComponent
+                          message={u}
+                          onTransfer={(message, recipient) => transferMessage(message, recipient)}
+                        />
+                      ),
+                    },
+                  },
+                });
+
+              p.push(
+                t.createElement(U, {
+                  label: "Transférer",
+                  icon: c("icon_transfer"),
+                  onPress: () => {
+                    A.hideActionSheet();
+                    f.push(I);
+                  },
+                })
+              );
+            });
+          });
+    });
+  },
+
+  onStop() {
+    w.unpatchAll();
+  },
+};
+
+L(q);
